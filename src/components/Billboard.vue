@@ -45,6 +45,7 @@
 
 
 <script>
+import { mapActions } from 'vuex';
 import Swiper from 'swiper/bundle'
 import 'swiper/swiper-bundle.css'
 
@@ -55,18 +56,21 @@ export default {
             currentIndex: 0,
             currentColor: '',
             isAutoplay: false,
-            swiper: null
+            swiper: null,
+            done: false
         }
     },
     mounted () {
         this.init()
     },
     methods: {
+        ...mapActions('fetchData', [
+            'fetchData'
+        ]),
         async init() {
             this.billboards = await this.$fetch({
                 requestName: 'billboards'
             })
-
             this.$nextTick(() => {
                 this.swiper = new Swiper(this.$refs.swiper, {
                     effect: 'fade',
@@ -115,6 +119,9 @@ export default {
 .billboard {
     transition: background-color 1s;
     .inner {
+        width: 1240px;
+        margin: 0 auto;
+        position: relative;
         .swiper-container {
             width: 1240px;
             height: 400px;

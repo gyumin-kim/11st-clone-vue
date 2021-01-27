@@ -2,7 +2,7 @@
   <div>
     <l-n-b></l-n-b>
     <my-header></my-header>
-    <billboard></billboard>>
+    <billboard></billboard>
   </div>
 </template>
 
