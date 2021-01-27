@@ -9,14 +9,32 @@
           href="javascript:void(0)"
           class="logo"></a>
         <div class="search">
-          <input
+          <input 
             v-model="searchText"
             placeholder="찾고 싶은 상품을 검색해 보세요!"
-            type="text"
+            type="text" 
             @keyup.enter="search" />
           <div
             class="search__icon"
-            @click="search"></div>
+            @click="search">
+          </div>
+        </div>
+        <div class="ranking">
+          <div 
+            ref="swiper"
+            class="swiper-container">
+            <div class="swiper-wrapper">
+              <div
+                v-for="(rank, index) in rankings.rankings"
+                :key="rank.name"
+                class="swiper-slide">
+                <a :href="rank.href">
+                  <span class="index">{{ index + 1 }}</span>
+                  <span class="name">{{ rank.name }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -24,25 +42,49 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      searchText: ''
-    }
-  },
-  methods: {
-    onNav () {
-      this.$store.dispatch('navigation/onNav')
-    },
-    async search () {
-      if (!this.searchText.trim()) return
+import Swiper from 'swiper/bundle'
+import 'swiper/swiper-bundle.css'
 
-      const res = await this.$search({
-        searchText: this.searchText
-      })
-      console.log(res)
+export default {
+    data() {
+        return {
+          searchText: '',
+          rankings: {}
+        }
+    },
+    mounted () {
+      this.init()
+    },
+    methods: {
+        async init () {
+          this.rankings = await this.$fetch({
+            requestName: 'rankings'
+          })
+    
+          this.$nextTick(() => {
+            // https://swiperjs.com/api/
+            new Swiper(this.$refs.swiper, {
+              direction: 'vertical',
+              speed: 1000,
+              autoplay: {
+                delay: 3000
+              },
+              loop: true
+            })
+          })
+        },
+        onNav() {
+            this.$store.dispatch('navigation/onNav')
+        },
+        async search () {
+          if (!this.searchText.trim()) return
+
+          const res = await this.$search({
+            searchText: this.searchText
+          })
+          console.log(res)
+        }
     }
-  }
 }
 </script>
 
@@ -52,17 +94,18 @@ export default {
       display: flex;
       align-items: center;
       height: 120px;
+
       .open-nav-drawer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 60px;
         height: 60px;
         border-radius: 50%;
         cursor: pointer;
-        box-shadow:
+        box-shadow: 
           0 2px 6px rgba(#000, .06),
           0 0 1px rgba(#000, .4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
         &::after {
           content: "";
           display: block;
@@ -77,7 +120,7 @@ export default {
         display: block;
         width: 94px;
         height: 40px;
-        margin: 4px;
+        margin: 0 24px;
         background-image: url("https://trusting-williams-8cacfb.netlify.app/images/globals_2x.png");
         background-position: -162px 0;
         background-size: 363px;
@@ -97,11 +140,9 @@ export default {
           outline: none;
           font-family: 'Noto Sans KR', sans-serif;
           &::placeholder {
-            color: #aaa;
+            color: #bbb;
           }
         }
-        // & -> .search
-        // .search_icon -> &__icon
         &__icon {
           width: 50px;
           height: 50px;
@@ -112,6 +153,33 @@ export default {
           background-image: url("https://trusting-williams-8cacfb.netlify.app/images/globals_2x.png");
           background-position: -162px -45px;
           background-size: 363px;
+        }
+      }
+      .ranking {
+        width: 210px;
+        margin: 0 30px;
+        .swiper-container {
+          width: 182px;
+          height: 28px;
+          .swiper-slide {
+            a {
+              display: block;
+              height: 28px;
+              line-height: 28px;
+              text-decoration: none;
+              font-size: 15px;
+              color: #333;
+              font-weight: 700;
+              span.index {
+                margin-right: 10px;
+                color: #f43142;
+                font-style: italic;
+              }
+              &:hover span.name {
+                color: #f43142;
+              }
+            }
+          }
         }
       }
     }
