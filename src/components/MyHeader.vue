@@ -9,11 +9,13 @@
           href="javascript:void(0)"
           class="logo"></a>
         <div class="search">
-          <input
-            v-model="searchText"
-            placeholder="찾고 싶은 상품을 검색해 보세요!"
-            type="text"
-            @keyup.enter="search" />
+          <label>
+            <input
+              v-model="searchText"
+              placeholder="찾고 싶은 상품을 검색해 보세요!"
+              type="text"
+              @keyup.enter="search" />
+          </label>
           <div
             class="search__icon"
             @click="search"></div>
@@ -79,6 +81,31 @@
             </ul>
           </div>
         </div>
+        <ul class="user-menu">
+          <li class="my">
+            <a href="javascript:void(0)"></a>
+            <ul class="my__menu">
+              <li
+                v-for="item in myInfo"
+                :key="item.name">
+                <a :href="item.href">
+                  {{ item.name }}
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="javascript:void(0)"></a>
+          </li>
+          <li>
+            <a href="javascript:void(0)"></a>
+          </li>
+          <li>
+            <a
+              href="javascript:void(0)"
+              @click="onNav"></a>
+          </li>
+        </ul>
       </div>
     </header>
   </div>
@@ -87,9 +114,7 @@
 <script>
 import _throttle from 'lodash/throttle'
 import dayjs from 'dayjs'
-// import Swiper JS
 import Swiper from 'swiper/bundle';
-// import Swiper styles
 import 'swiper/swiper-bundle.css';
 
 export default {
@@ -99,6 +124,13 @@ export default {
       rankings: {},
       isShowRankingWrap: false,
       tabIndex: 0,
+      myInfo: [
+        { name: '나의 쿠폰', href: 'javascript:void(0)' },
+        { name: '주문/배송조회', href: 'javascript:void(0)' },
+        { name: '취소/반품/교환', href: 'javascript:void(0)' },
+        { name: '고객센터', href: 'javascript:void(0)' },
+        { name: '회원정보', href: 'javascript:void(0)' }
+      ]
     }
   },
   computed: {
@@ -118,7 +150,7 @@ export default {
   },
   methods: {
     async init () {
-      window.addEventListener('scroll', _throttle(event => {
+      window.addEventListener('scroll', _throttle(() => {
         this.isFixed = window.scrollY > 120
       }, 100))
       this.rankings = await this.$fetch({
