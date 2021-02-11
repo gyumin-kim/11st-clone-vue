@@ -13,6 +13,7 @@
               v-for="product in products"
               :key="product.name"
               class="swiper-slide">
+              {{ product.name }}
             </div>
           </div>
         </div>
@@ -38,7 +39,8 @@ export default {
   },
   methods: {
     async init() {
-      this.$lazyLoad(this.$refs.lazyLoadElement)
+      // Lazy Loading 기능이 아직 만들어지지 않았네요~
+      // this.$lazyLoad(this.$refs.lazyLoadElement)
       this.products = await this.$fetch({
         requestName: 'hotFocus'
       })

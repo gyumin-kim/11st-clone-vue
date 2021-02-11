@@ -12,6 +12,7 @@
 import LNB from '~/src/components/LNB'
 import MyHeader from '~/src/components/MyHeader'
 import Billboard from '~/src/components/Billboard'
+// 경로 별칭을 사용하는 게 좋아요~
 import Direct from "./components/Direct";
 import HotFocus from "./components/HotFocus";
 
@@ -22,7 +23,7 @@ export default {
     Billboard,
     Direct,
     HotFocus
-  }  
+  }
 }
 </script>
 
