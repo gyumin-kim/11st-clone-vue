@@ -13,6 +13,7 @@
               v-for="product in products"
               :key="product.name"
               class="swiper-slide">
+              {{ product.name }}
             </div>
           </div>
         </div>
