@@ -118,9 +118,7 @@ export default {
 .billboard {
   transition: background-color 1s;
   .inner {
-    width: 1240px;
-    margin: 0 auto;
-    position: relative;
+    // .inner의 스타일은 이미 전역으로 설정했어요~
     .swiper-container {
       width: 1240px;
       height: 400px;
